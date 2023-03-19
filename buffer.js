@@ -1,6 +1,4 @@
-const { match } = require('assert');
 const fs = require('fs');
-const { emit } = require('process');
 const XLSX = require('xlsx');
 
 
@@ -45,11 +43,11 @@ const mycontact = {
     combinedName(){
       // combinar os sheetNames
       
-      dadosJSON.forEach((contact) =>{
+      dadosJSON.forEach((contact) => {
         const combineName = [contact.name,contact.name2,contact.name3 ].join('')
         this.keywords.forEach(keyword => {
         if(combineName.match(this.regexForStringSearch(keyword))){
-          switch(this.keyword) {
+          switch(keyword) {
             case "incorporadora":
               incorporadora.push(contact);
               break;
@@ -89,4 +87,4 @@ const mycontact = {
 
 
 mycontact.combinedName()
-console.log(construtora)
+// console.log(construtora)
