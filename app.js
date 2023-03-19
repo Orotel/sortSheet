@@ -42,32 +42,39 @@ const mycontact = {
     
     combinedName(){
       // combinar os sheetNames
-      
       dadosJSON.forEach((contact) => {
         const combineName = [contact.name,contact.name2,contact.name3 ].join('')
         this.keywords.forEach(keyword => {
         if(combineName.match(this.regexForStringSearch(keyword))){
+          const formatedContact = {
+            nome:combineName,
+            email:contact.Email,
+            emailAlt:contact.emailAlt,
+            phone1:contact.phone1,
+            phone2:contact.phone2,
+          }
+
           switch(keyword) {
             case "incorporadora":
-              incorporadora.push(contact);
+              incorporadora.push(formatedContact);
               break;
             case "construtora":
-              construtora.push(contact);
+              construtora.push(formatedContact);
               break;
             case "fundo":
-              fundo.push(contact);
+              fundo.push(formatedContact);
               break;
             case "investidor":
-              investidor.push(contact);
+              investidor.push(formatedContact);
               break;
             case "banco":
-              banco.push(contact);
+              banco.push(formatedContact);
               break;
             case "industria":
-              industria.push(contact);
+              industria.push(formatedContact);
               break;
             case "empresa":
-              empresa.push(contact);
+              empresa.push(formatedContact);
               break;
             default:
               break
@@ -77,14 +84,40 @@ const mycontact = {
     }
     )
  },
- 
+}
+// Adicione seus objetos de contato aos arrays aqui
 
-
-
-
+function createSheet(sheetName, data) {
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  return wb;
 }
 
+function appendSheetsToWorkbook(workbook, sheets) {
+  sheets.forEach(({ sheetName, data }) => {
+    const ws = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(workbook, ws, sheetName);
+  });
+  return workbook;
+}
 
+const sheets = [
+  { sheetName: 'Incorporadora', data: incorporadora },
+  { sheetName: 'Construtora', data: construtora },
+  { sheetName: 'Fundo', data: fundo },
+  { sheetName: 'Investidor', data: investidor },
+  { sheetName: 'Banco', data: banco },
+  { sheetName: 'Industria', data: industria },
+  { sheetName: 'Empresa', data: empresa },
+];
 
 mycontact.combinedName()
-// console.log(construtora)
+const wb = XLSX.utils.book_new();
+appendSheetsToWorkbook(wb, sheets);
+
+// Substitua 'output.xlsx' pelo nome desejado do arquivo
+XLSX.writeFile(wb, 'output.xlsx');
+
+createSheet(`batata`,fundo)
+console.log(incorporadora)
